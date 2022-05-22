@@ -1,0 +1,5 @@
+[webservers]
+rhhost1   ansible_user=user1
+rhhost3   ansible_user=user1
+[dbservers]
+rhhost2   ansible_user=user1
