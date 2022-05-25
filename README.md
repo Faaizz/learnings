@@ -7,3 +7,5 @@
 - [Microservices Security](./microservices-security/README.md)
 - [Software Architecture Foundations](./software-architecture-foundations/README.md)
 - [Using Ansible Playbooks](./using-ansible-playbooks/README.md)
+
+- [ROS 2 Tutorial](https://github.com/Faaizz/ros_gazebo_workspace/blob/main/notes.md)
