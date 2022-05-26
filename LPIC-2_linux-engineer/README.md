@@ -9,6 +9,7 @@ Notes from LPIC-2 Linux Engineer (201-450) Cert Prep video course on LinkedIn Le
   - [Supporting Linux](#supporting-linux)
     - [Capacity Planning](#capacity-planning)
       - [Measuring CPU Activity](#measuring-cpu-activity)
+      - [Measuring Memory Usage](#measuring-memory-usage)
 
 ## Supporting Linux
 ### Capacity Planning
@@ -82,4 +83,28 @@ lsof -p <pid>
 # mpstat: get real-time processor statistics
 ## ctrl+c at the end gives an average of usage statistics
 mpstat <interval_in_seconds>
+```
+
+#### Measuring Memory Usage
+```shell
+# free: get an overview of physical and virtual memory comsumption
+## -h: human-readable format
+free -h
+## run at intervals of 3 seconds
+free -s 3
+
+# sar: historical memory usage (monitoring)
+## -r: RAM (physical memory); -B: page in/out
+sar -r
+sar -B
+## -S: Swap; -W: Page swap in/out
+sar -S
+sar -W
+
+# vmstat: get information about physical/virtual memory
+## bi: blocks in: disk -> RAM -- always good :-)
+## bo: block out: RAM -> -- good or bad: maybe we ran out of RAM? or RAM is being cleaned.
+##    bo + si: data moving RAM -> swap -- BAD!
+## Get information in megabytes at 3 seconds intervals
+vmstat --unit M 3
 ```
