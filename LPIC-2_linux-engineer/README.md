@@ -10,6 +10,7 @@ Notes from LPIC-2 Linux Engineer (201-450) Cert Prep video course on LinkedIn Le
     - [Capacity Planning](#capacity-planning)
       - [Measuring CPU Activity](#measuring-cpu-activity)
       - [Measuring Memory Usage](#measuring-memory-usage)
+      - [Measuring Disk Activity](#measuring-disk-activity)
 
 ## Supporting Linux
 ### Capacity Planning
@@ -43,6 +44,12 @@ sar -r
 sar -b
 ### Network
 sar -n
+### Specific time frame
+#### <file_to_read>: sar keeps one month of data.
+####    Specific file to read can be specified by date. E.g. /var/log/sysstatsa18: 18th day of the month
+#### <start_time>: E.g. 09:00:00
+#### <end_time>: E.g. 10:30:00
+sar -f <file_to_read> -s <start_time> -e <end_time>
 
 # Check system uptime
 uptime
@@ -107,4 +114,32 @@ sar -W
 ##    bo + si: data moving RAM -> swap -- BAD!
 ## Get information in megabytes at 3 seconds intervals
 vmstat --unit M 3
+```
+
+#### Measuring Disk Activity
+```shell
+# iotop: get overview of IO metrics
+## necessary to run as admin (i.e., sudo)
+sudo iotop
+## monitor accumulative real-time IO: 
+##    accumulate IO per process since start of iotop utility
+sudo iotop -a
+## lsof: list open files
+## -p: process id: list open files for specifies pid
+lsof -p <pid>
+
+# iostat: show individual disk performance
+iostat
+## -x: detailed stats
+## -t <secs>: refresh every second
+## r_await / w_await: shows that read/write operations had to wait; 
+##    this is usually a problem and needs to be investigated
+iostat -x -t <sec>
+
+# sar: historical disk usage
+## rtps: number of file read requests to disk
+## wtps: number of file write requests to disk
+## bread/s: number of blocks read from disk per second
+## bwrtn/s: number of blocks written to disk per second
+sar -b
 ```
