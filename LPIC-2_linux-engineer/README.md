@@ -11,6 +11,7 @@ Notes from LPIC-2 Linux Engineer (201-450) Cert Prep video course on LinkedIn Le
       - [Measuring CPU Activity](#measuring-cpu-activity)
       - [Measuring Memory Usage](#measuring-memory-usage)
       - [Measuring Disk Activity](#measuring-disk-activity)
+      - [Measuring Network Activity](#measuring-network-activity)
 
 ## Supporting Linux
 ### Capacity Planning
@@ -143,3 +144,34 @@ iostat -x -t <sec>
 ## bwrtn/s: number of blocks written to disk per second
 sar -b
 ```
+
+#### Measuring Network Activity
+```shell
+# iftop: Get an overview of all network interfaces and all traffic moving through them
+iftop
+## -i <interface_name>: get all traffic through a specific newwork interface
+iftop -i <interface_name>
+
+# sar: historical disk usage
+### Using sar -n requires specification of a keyword. E.g. DEV, IP, IP6, etc.
+sar -n DEV
+
+# mtr: traceroute on steroids
+## inspect performance of paths which network connection takes to the internet
+mtr <some_destination> # e.g. mtr www.google.com
+## -z: show ASNs (Autonomous System Number) of autonomous systems which packets pass through on their way to destination
+mtr -z <some_destination>
+
+# ip: check interface configurations
+## list all sub-commands and flags
+ip
+ip addr
+
+# ss: socket statistics
+ss -plunt
+ss -natp
+
+# lsof: list open files
+## show all open TCP ports with established connections
+sudo lsof -iTCP -sTCP:ESTABLISHED
+``` 
