@@ -1,5 +1,16 @@
 # Networking Foundations
 
+- [Networking Foundations](#networking-foundations)
+  - [Basics](#basics)
+    - [Network Addresses](#network-addresses)
+    - [Pieces & Parts of a Network](#pieces--parts-of-a-network)
+      - [Network Interface Card (NIC)](#network-interface-card-nic)
+      - [Switches](#switches)
+      - [Routers](#routers)
+      - [Copper Cabling](#copper-cabling)
+      - [Protocol Data Units (PDUs)](#protocol-data-units-pdus)
+  - [References](#references)
+
 ## Basics
 Notes from Networking Foundations: Networking Basics video course on LinkedIn Learning.
 
@@ -15,6 +26,34 @@ Notes from Networking Foundations: Networking Basics video course on LinkedIn Le
   Network prefix (used to identify the network) is separated from host address.
   E.g. 0b23:1e4a:9003:a34d:0000:0000:0000:0000/64 indicates that the first 64 bits identify the network, leaving 64 bits for host addressing.
 
+
+### Pieces & Parts of a Network
+
+#### Network Interface Card (NIC)
+Hardware component that is required to facilitate connections to networks
+
+#### Switches
+![switches](./img/switches.jpg)
+Connect devices on a network.
+They route **frames** to appropriate destination within a network by keeping a Port <-> MAC address table.
+They populate their MAC address tables using a technique called "flooding". 
+
+#### Routers
+![routers](./img/routers.jpg)
+Routers inter-connect different networks.
+They transport **packets** across different networks which they aer connected to, i.e., routers have multiple (at least 2) network interfaces.
+They store an IP Routing Table which associates network interfaces (e.g. ethernet ports) to networks.
+`0.0.0.0/0` is a default network address which is often used to route traffic into the internet.
+When multiple network addresses match the destination network on a **packet**, the most specific network (i.e., the network with the longest subnet mask) is selected.
+
+#### Copper Cabling
+![RJ45](./img/rj45.jpg)
+![twisted-pair-cabling](img/twisted-pair-cabling.jpg)
+
+#### Protocol Data Units (PDUs)
+These are the units of data routed by different network layers/devices
+- Switched: frames
+- Routers: packets
 
 ## References
 - [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics/network-interface-cards)
