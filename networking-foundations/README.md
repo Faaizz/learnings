@@ -9,6 +9,16 @@
       - [Routers](#routers)
       - [Copper Cabling](#copper-cabling)
       - [Protocol Data Units (PDUs)](#protocol-data-units-pdus)
+    - [OSI Model](#osi-model)
+      - [Layer 1: Physical Layer](#layer-1-physical-layer)
+      - [Layer 2: Data Link Layer](#layer-2-data-link-layer)
+      - [Layer 3: Network Layer](#layer-3-network-layer)
+      - [Layer 4: Transport Layer](#layer-4-transport-layer)
+      - [Layer 5: Session Layer](#layer-5-session-layer)
+      - [Layer 6: Presentation Layer](#layer-6-presentation-layer)
+      - [Layer 7: Application Layer](#layer-7-application-layer)
+      - [TCP/IP Model](#tcpip-model)
+      - [Some Common Protocols](#some-common-protocols)
   - [References](#references)
 
 ## Basics
@@ -52,8 +62,56 @@ When multiple network addresses match the destination network on a **packet**, t
 
 #### Protocol Data Units (PDUs)
 These are the units of data routed by different network layers/devices
-- Switched: frames
+- Switches: frames
 - Routers: packets
+
+
+### OSI Model
+
+#### Layer 1: Physical Layer
+PDU: bits.
+
+#### Layer 2: Data Link Layer
+Operates using physical addressing.
+PDU: frames.
+
+#### Layer 3: Network Layer
+Operates using logical addressing.
+PDU: packets.
+
+#### Layer 4: Transport Layer
+Establishes logical connections: reliable --- e.g. Transmission Control Protocol (TCP) / unreliable --- e.g. User Datagram Protocol (UDP).
+PDU: segments.
+
+Layers 1-4 are know as the data segment layers.
+
+#### Layer 5: Session Layer
+Spins up and tears down communication sessions.
+E.g. API sessions.
+
+#### Layer 6: Presentation Layer
+How data is presented.
+Data encryption lives on this layer, so does data formatting (e.g. images in jpeg).
+
+#### Layer 7: Application Layer
+- User interfaces
+- Hypertext Transfer Protocol (HTTP/HTTPS)
+- Domain Name System (DNS)
+
+
+#### TCP/IP Model
+Typically combines layers 5-7 from the OSI model into a single "Application Layer".
+Some variations of the TCP/IP model are shown below:
+![4 Layer TCP/IP](./img/tcp-4.jpg)
+![5 Layer TCP/IP](./img/tcp-5.jpg)
+
+
+#### Some Common Protocols
+- HTTP: TCP 80
+- HTTPS: TCP 443
+- DNS: TCP/UDP 53
+- Network Time Protocol (NTP): UDP 123
+- Dynamic Host Configuration Protocol (DHCP): UDP 67
 
 ## References
 - [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics/network-interface-cards)
