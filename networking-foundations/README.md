@@ -23,6 +23,10 @@
       - [Dynamic Host Configuration Protocol](#dynamic-host-configuration-protocol)
       - [Network Address Translation](#network-address-translation)
       - [Network Time Protocol](#network-time-protocol)
+    - [Wireless networks](#wireless-networks)
+      - [2.4 GHz](#24-ghz)
+      - [5 GHz](#5-ghz)
+      - [Wi-Fi 6](#wi-fi-6)
   - [References](#references)
 
 ## Basics
@@ -164,6 +168,27 @@ The Router keeps an additional port information in its NAT Translation Table whi
 - Stratum number >= 16: Invalid time
 
 
+
+### Wireless networks
+![wireless-adhoc](./img/wireless-adhoc.jpg)
+![wireless-infra](./img/wireless-infra.jpg)
+![wireless-mesh](./img/wireless-mesh.jpg)
+
+#### 2.4 GHz
+![wireless-2.4GHz](./img/wireless-2.4GHz.jpg)
+![wireless-2.4GHz-honeycomb](./img/wireless-2.4GHz-honeycomb.jpg)
+- Maximum of 3 non-overlapping channels
+- Better range (and penetration)
+
+#### 5 GHz
+![wireless-5GHz](./img/wireless-5GHz.jpg)
+- Over 20 non-overlapping channels (with the default 20 MHz channel width, this may reduce if channels are configured with channel bonding)
+- Channel bonding: configure channels to use a larger channel width by combining channels. It allows for better throughput
+
+#### Wi-Fi 6
+![wifi-6_1](./img/wifi-6_1.jpg)
+![wifi-6_2](./img/wifi-6_2.jpg)
+![wifi-6_3](./img/wifi-6_3.jpg)
 
 ## References
 - [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics/network-interface-cards)
