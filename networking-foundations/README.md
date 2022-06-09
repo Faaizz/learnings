@@ -19,6 +19,10 @@
       - [Layer 7: Application Layer](#layer-7-application-layer)
       - [TCP/IP Model](#tcpip-model)
       - [Some Common Protocols](#some-common-protocols)
+    - [Network Services](#network-services)
+      - [Dynamic Host Configuration Protocol](#dynamic-host-configuration-protocol)
+      - [Network Address Translation](#network-address-translation)
+      - [Network Time Protocol](#network-time-protocol)
   - [References](#references)
 
 ## Basics
@@ -112,6 +116,54 @@ Some variations of the TCP/IP model are shown below:
 - DNS: TCP/UDP 53
 - Network Time Protocol (NTP): UDP 123
 - Dynamic Host Configuration Protocol (DHCP): UDP 67
+
+
+
+### Network Services
+
+#### Dynamic Host Configuration Protocol
+Dynamically assign IP addresses to Hosts on a network.
+![dhcp-v4](./img/dhcp-v4.jpg)
+**Steps to DHCP (IP v4)**:
+1. Discover: Host sends out a broadcast over the subnet to any available DHCP servers in an attempt to obtain their IP addresses
+2. Offer: All DHCP servers that receive the Host's discover message send back an offer message with their respective IP addresses
+3. Request: The Host makes a request for an IP address to the first DHCP server whose offer it receives
+4. Acknowledge: The DHCP server provides the Host with an IP address, the network subnet mask, the address of the networks DNS server, and any other relevant information
+
+**DHCP IP v6**
+- Stateful
+![dhcp-v6-stateful](./img/dhcp-v6-stateful.jpg)
+- Stateless
+![dhcp-v6-stateless](./img/dhcp-v6-stateless.jpg)
+* EUI-64 generates the a 64-bit host address from the 48-bit MAC address of the Host
+
+
+#### Network Address Translation
+Makes it possible for all hosts on an internal network to use a limited number of internet-facing IP addresses.
+
+**Private IP Addresses:**
+Can be re-used in different internal networks without conflict. They are not publically routed.
+- Class A: 10.0.0.0 to 10.255.255.255 (i.e., 10.0.0.0/8)
+- Class B: 172.16.0.0 to 172.31.255.255 (i.e., 172.16.0.0/12)
+- Class C: 192.168.0.0 to 192.168.255.255 (i.e., 192.168.0.0/16)
+
+**Dynamic NAT:** 
+![nat-dynamic](./img/nat-dynamic.jpg)
+Translate multiple internal local addresses to internal global addresses (multiple internet-facing IPs are available.)
+
+**Port Address Translation (PAT):**
+![nat-pat](./img/nat-pat.jpg)
+This is useful if a limited number of internet-facing IP addresses are available (e.g. 1).
+Here, source ports are dynamically allocated to outbound connections from the Hosts.
+The Router keeps an additional port information in its NAT Translation Table which it uses to forward incoming traffic to the appropriate Host.
+
+
+#### Network Time Protocol
+![ntp](./img/ntp.jpg)
+- Increment Stratum number per server hop, i.e. one NTP server connected to another NTP server (not per network hop)
+- Stratum number >= 16: Invalid time
+
+
 
 ## References
 - [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics/network-interface-cards)
