@@ -89,7 +89,8 @@ PDU: packets.
 
 #### Layer 4: Transport Layer
 Establishes logical connections: reliable --- e.g. Transmission Control Protocol (TCP) / unreliable --- e.g. User Datagram Protocol (UDP).
-PDU: segments.
+PDU: segments (TCP)
+PDU: datagram (UDP)
 
 Layers 1-4 are know as the data segment layers.
 
@@ -111,7 +112,11 @@ Data encryption lives on this layer, so does data formatting (e.g. images in jpe
 Typically combines layers 5-7 from the OSI model into a single "Application Layer".
 Some variations of the TCP/IP model are shown below:
 ![4 Layer TCP/IP](./img/tcp-4.jpg)
+*4-layer TCP/IP*
 ![5 Layer TCP/IP](./img/tcp-5.jpg)
+*5-layer TCP/IP*
+![tcp-data](./img/tcp-data.jpg)
+*TCP/IP Protocol Data Units*
 
 
 #### Some Common Protocols
