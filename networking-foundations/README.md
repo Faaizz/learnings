@@ -27,6 +27,10 @@
       - [2.4 GHz](#24-ghz)
       - [5 GHz](#5-ghz)
       - [Wi-Fi 6](#wi-fi-6)
+  - [Protocols](#protocols)
+    - [Transmission Control Protocol](#transmission-control-protocol)
+    - [User Datagram Protocol](#user-datagram-protocol)
+    - [Layer 4 ports](#layer-4-ports)
   - [References](#references)
 
 ## Basics
@@ -195,5 +199,41 @@ The Router keeps an additional port information in its NAT Translation Table whi
 ![wifi-6_2](./img/wifi-6_2.jpg)
 ![wifi-6_3](./img/wifi-6_3.jpg)
 
+
+
+## Protocols
+
+### Transmission Control Protocol
+![tcp-syn-ack](./img/tcp-syn-ack.jpg)
+- Connection-oriented
+- Three way handshake to establish connection
+- Offers reliability
+- When data the amount of (window size) has been sent, 
+  the sender waits to receive acknowledgement from the receiver before it continues to send
+- If no acknowledgement is received, the last batch of data is retransmitted
+- Due to numbering of packets, the receiver can figure out if it has missed a packet,
+  then it can request retransmission of the missing packet from the sender
+
+### User Datagram Protocol
+- Connectionless
+- No acknowledgement, no order
+- unreliable
+- Faster
+
+### Layer 4 ports
+- 16-bit numbers to open communication lines
+- Well-known ports: < 1024
+- Ephemeral ports: > 1024
+- Services/applications can open up a port and wait for incoming connections on the port, this is called **listening**
+- When a client connects to an application via a well-known port, the client connection is often moved to an ephemeral port such that other connections can be received
+- TCP: port 0 cannot be used, it is reserved
+- UDP: source port is optional, 0 means no port is used
+- Binding an internet socket: transport protocol + port + IP address IP + port combination must be unique per host
+![packet-header](./img/packet-header.jpg)
+*TCP/IP Packet Header*
+
+
+
 ## References
-- [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics/network-interface-cards)
+- [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics)
+- [Networking Foundations: Protocols and CLI Tools](https://www.linkedin.com/learning/networking-foundations-protocols-and-cli-tools-14049306/)
