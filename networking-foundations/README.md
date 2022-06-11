@@ -28,6 +28,10 @@
       - [5 GHz](#5-ghz)
       - [Wi-Fi 6](#wi-fi-6)
   - [Protocols](#protocols)
+    - [Address Resolution Protocol](#address-resolution-protocol)
+    - [Internet Control Messaging Protocol (ICMP)](#internet-control-messaging-protocol-icmp)
+    - [Internet Group Messaging Protocol (IGMP)](#internet-group-messaging-protocol-igmp)
+    - [Domain Name Service (DNS)](#domain-name-service-dns)
     - [Transmission Control Protocol](#transmission-control-protocol)
     - [User Datagram Protocol](#user-datagram-protocol)
     - [Layer 4 ports](#layer-4-ports)
@@ -203,6 +207,50 @@ The Router keeps an additional port information in its NAT Translation Table whi
 
 ## Protocols
 
+### Address Resolution Protocol
+![arp](./img/arp.jpg)
+- Used for IPv4 address resolution, IPv6 uses ICMPv6 messages
+- IP <-> MAC mapping
+- Static IP <-> MAC mapping possible but not recommended (i.e., no ARP)
+1. Host checks its ARP cache for an entry with the packets destination IP address
+2. If found, the frame header is encapsulated with the corresponding destination MAC address and sent
+3. Otherwise, an ARP broadcast is sent onto the (switched) network with the request IP as the destination IP address
+4. If a host is present on the network with the IP address, the host responds to the ARP request
+5. The destination host's MAC address is then obtained and encapsulated into the frame and the frame is sent accordingly
+
+### Internet Control Messaging Protocol (ICMP)
+![icmp-header](./img/icmp-header.jpg)
+- Protocol number 1
+- Part of the IP suite
+- Does not carry any end user information
+- Disable ICMP redirects for security
+- Used for IPv6 address resolution (in place of ARP), neighbour discovery, router advertisement, etc.
+
+**ICMP Header**
+- Type: what is the purpose of the packet? e.g. destination unreachable, redirect, echo request, echo response, etc.
+- Code: more granular specification of the purpose. E.g. destination unreachable -> destination unknown
+
+### Internet Group Messaging Protocol (IGMP)
+- Used for Multicasting in IPv4, IPv6 uses ICMPv6
+- Multicast: Single host -> multiple hosts
+- Allows hosts to join multicast groups
+- Note: Multicasting via IGMP occurs at level 3 (at the routers --- Network layer)
+- Switches forward all broadcasts to all hosts on the switched network
+- To facilitate multicasting to only members of the multicast groups, switches umplement IGMP snooping
+
+### Domain Name Service (DNS)
+![dns-resolution](./img/dns-resolution.jpg)
+1. Host A wants to send traffic to www.a.com
+2. Host A checks its DNS cache for www.a.com, if a matching record is found, Host A encapsulates the packet wit the found IP address
+3. If a matching record is not found, Host A makes a DNS query to its DNS server (UDP port 53)
+4. Host A's DNS server checks its cache for www.a.com, if a record is found, the corresponding IP address is sent back to Host A
+5. Otherwise, Host A's DNS server looks up its root hints file and makes a DNS query to a root DNS server
+6. The root DNS server then sends back the IP address of the TLD (.com in this case)
+7. Host A's DNS server then sends a query to .com TLD DNS server, to which it gets the IP address of the www.a.com's Authoritative DNS server 
+8. Host A's DNS server then sends a query to the Authoritative DNS server, and gets back www.a.com's IP address
+9. Host A's DNS server then caches this and sends it back to Host A
+
+
 ### Transmission Control Protocol
 ![tcp-syn-ack](./img/tcp-syn-ack.jpg)
 - Connection-oriented
@@ -231,7 +279,6 @@ The Router keeps an additional port information in its NAT Translation Table whi
 - Binding an internet socket: transport protocol + port + IP address IP + port combination must be unique per host
 ![packet-header](./img/packet-header.jpg)
 *TCP/IP Packet Header*
-
 
 
 ## References
