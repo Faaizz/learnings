@@ -51,6 +51,7 @@
     - [Remote Desktop Protocol (RDP)](#remote-desktop-protocol-rdp)
     - [Virtual Network Computing (VNC)](#virtual-network-computing-vnc)
     - [Simple Network Management Protocol (SNMP)](#simple-network-management-protocol-snmp)
+  - [CLI Tools](#cli-tools)
   - [References](#references)
 
 ## Basics
@@ -402,6 +403,43 @@ HTTP Response Code
 
 ### Simple Network Management Protocol (SNMP)
 - Gathers statistical info from network connected devices
+
+
+## CLI Tools
+```shell
+# IP address information
+ip addr
+# ping
+ping <ip_addr>
+ping -a <host_name>
+# traceroute: uses ICMP packets to map out the path to a destination host
+traceroute <host_name>
+
+# ARP
+## View ARP cache
+arp -a
+
+# netstat: information about active connection
+netstat
+## -a: display listening ports
+netstat -a
+## -b: show application using port
+netstat -ap
+## -o: show process ID
+netstat -apo
+## -n: skip DNS resolution
+netstat -apno
+## display 1 page at a time
+netstat -apno | less
+## -r: local routing table
+netstat -r
+## -s: statistical information
+netstat -s
+## -p: specify protocol
+netstat -p <protocol_name>
+```
+
+
 
 ## References
 - [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics)
