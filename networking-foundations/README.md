@@ -141,6 +141,8 @@ Some variations of the TCP/IP model are shown below:
 #### Dynamic Host Configuration Protocol
 Dynamically assign IP addresses to Hosts on a network.
 ![dhcp-v4](./img/dhcp-v4.jpg)
+![dhcp-request](./img/dhcp-request.jpg)
+
 **Steps to DHCP (IP v4)**:
 1. Discover: Host sends out a broadcast over the subnet to any available DHCP servers in an attempt to obtain their IP addresses
 2. Offer: All DHCP servers that receive the Host's discover message send back an offer message with their respective IP addresses
