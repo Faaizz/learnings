@@ -35,6 +35,22 @@
     - [Transmission Control Protocol](#transmission-control-protocol)
     - [User Datagram Protocol](#user-datagram-protocol)
     - [Layer 4 ports](#layer-4-ports)
+    - [Hypertext Transfer Protocol (HTTP/HTTPS)](#hypertext-transfer-protocol-httphttps)
+    - [Post Office Protocol 3 (POP3)](#post-office-protocol-3-pop3)
+    - [Internet Message Access Protocol (IMAP)](#internet-message-access-protocol-imap)
+    - [Simple Mail Transfer Protocol (SMTP)](#simple-mail-transfer-protocol-smtp)
+    - [Voice over Internet (VoIP)](#voice-over-internet-voip)
+    - [Some VoIP-related Protocols](#some-voip-related-protocols)
+      - [Session Initialization Protocol (SIP)](#session-initialization-protocol-sip)
+      - [H.232](#h232)
+      - [Media Gateway Control Protocol (MGCP)](#media-gateway-control-protocol-mgcp)
+      - [Real-Time Transfer Protocol (RTP)](#real-time-transfer-protocol-rtp)
+    - [File Transfer Protocol (FTP)](#file-transfer-protocol-ftp)
+    - [Server Message Block (SMB)](#server-message-block-smb)
+    - [Secure Shell (SSH)](#secure-shell-ssh)
+    - [Remote Desktop Protocol (RDP)](#remote-desktop-protocol-rdp)
+    - [Virtual Network Computing (VNC)](#virtual-network-computing-vnc)
+    - [Simple Network Management Protocol (SNMP)](#simple-network-management-protocol-snmp)
   - [References](#references)
 
 ## Basics
@@ -283,6 +299,111 @@ The Router keeps an additional port information in its NAT Translation Table whi
 *TCP/IP Packet Header*
 
 
+### Hypertext Transfer Protocol (HTTP/HTTPS)
+- TCP port 80
+- HTTPS: TCP port 443
+HTTP Methods
+- GET: retrieve data
+- HEAD: GET without the data
+- POST: perform action / pass information to server
+
+HTTP Response Code
+- 1XX: Informational
+- 2XX: Successful
+- 3XX: Redirection
+- 4XX: Client Error
+- 5XX: Server Error
+
+
+### Post Office Protocol 3 (POP3)
+- Used by email clients to retrieve messages from an email server
+- TCP port 110
+- POP3S (TLS/SSL): TCP port 995
+- Default behaviour: download to device, delete from server
+- Single connection at a time
+
+### Internet Message Access Protocol (IMAP)
+- Used by email clients to retrieve messages from an email server
+- TCP port 143
+- IMAPS: TCP port 993
+- Default bahaviour: email stays on server (doesn't delete by default)
+- Clients can access email from multiple devices
+- Supports multiple connections at a time
+- Tracks message state, e.g. read, replied, etc.
+- Supports server-side searches
+
+### Simple Mail Transfer Protocol (SMTP)
+- Used for sending and receiving emails, especially between servers
+- Client use SMTP to submit outgoing emails, but use IMAP (or POP3) for retrieval
+- TCP port 25 (plaintext communication)
+- TCP port 587 (encrypted communication)
+
+### Voice over Internet (VoIP)
+- Carries voice traffic digitally over a network
+
+### Some VoIP-related Protocols
+#### Session Initialization Protocol (SIP)
+- Signaling and control protocol: used for voice and video over IP, instant messaging, etc.
+- Primarily responsible for establishing and terminating communications
+- TCP and UDP port 5060 for plaintext
+- TCP and UDP port 5061 for TLS
+- Packets are similar to HTTP (e.g. header fields & encoding rules)
+- Uses Uniform Resource Identifiers (URI), of the general format: `sip:username:password@host:port`
+- Uses office phones as user agents
+  
+#### H.232
+- Signaling and control protocol
+- TCP & UDP ports 1718 - 1720
+- Most often used as a gateway for VoIP services
+
+#### Media Gateway Control Protocol (MGCP)
+- Signaling & control protocol
+- Gateway of phone system to the Public Switched Telephone Network (PSTN)
+- allows phone system to control the gateway
+- TCP port 2428, UDP port 2427
+
+#### Real-Time Transfer Protocol (RTP)
+- Works with a signaling & control protocol (e.g. those listed above)
+- Transfers voice and video
+- Real-Time Control Protocol (RTCP) periodically send stats to participants (but carries no voice data)
+- Detects out of sequence packets and corrects jitter
+- Support multicast
+- Employs error concealment algorithm
+- UDP ports 16384 - 32767
+- RTP port even, RTCP port odd (next odd port after the corresponding RTP port)
+
+
+### File Transfer Protocol (FTP)
+- TCP port 21 for initialization 
+- TCP port 20 for transfer (active mode), or some port specified by server (passive mode)
+
+### Server Message Block (SMB)
+- Application layer protocol for sharing files, printer, & serial ports
+- TCP port 445
+- Most often used for Windows File Sharing
+- Samba: Open-source implementation of SMB
+  - Allows linux devices to act as servers or clients
+
+### Secure Shell (SSH)
+- TCP port 22
+
+### Remote Desktop Protocol (RDP)
+- TCP port 3389 
+- Audio redirection
+- File system redirection
+- Printer redirection
+- Port redirection
+- Clipboard sharing
+- Open-source and browser-based version
+
+### Virtual Network Computing (VNC)
+- Uses Remote Frame Buffer Protocol (RFBP) to remotely control another computer
+- TCP port 5900+N, where N is the display number (:0 for physical display)
+
+### Simple Network Management Protocol (SNMP)
+- Gathers statistical info from network connected devices
+
 ## References
 - [Networking Foundations: Networking Basics](https://www.linkedin.com/learning/networking-foundations-networking-basics)
 - [Networking Foundations: Protocols and CLI Tools](https://www.linkedin.com/learning/networking-foundations-protocols-and-cli-tools-14049306/)
+- [Virtual Network Computing - Wikipedia](https://en.wikipedia.org/wiki/Virtual_Network_Computing)
