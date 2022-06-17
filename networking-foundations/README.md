@@ -52,6 +52,9 @@
     - [Virtual Network Computing (VNC)](#virtual-network-computing-vnc)
     - [Simple Network Management Protocol (SNMP)](#simple-network-management-protocol-snmp)
   - [CLI Tools](#cli-tools)
+  - [Subnetting](#subnetting)
+    - [IPv4 Address Classes](#ipv4-address-classes)
+      - [Private IP Address Ranges](#private-ip-address-ranges)
   - [References](#references)
 
 ## Basics
@@ -438,6 +441,43 @@ netstat -s
 ## -p: specify protocol
 netstat -p <protocol_name>
 ```
+
+
+## Subnetting
+
+### IPv4 Address Classes
+***Class A:**
+- Value in first octet: 0-127 (first binary digit (leftmost bit) is 0)
+- Default subnet mask: 255.0.0.0 (prefix notation: /8)
+- IP addresses with `0`` as the first octet is often not assignable, and IPs with 127 as the first octet (127.0.0.1) is the loopback address on a network card.
+- The effective first octet range for Class A IP addresses is 1-126.
+
+***Class B:**
+- Value in first octet: 128-191 (first 2 binary digits (leftmost bits) are 10)
+- Default subnet mask: 255.255.0.0 (prefix notation: /16)
+
+***Class C:**
+- Value in first octet: 192-223 (first 3 binary digits (leftmost bits) are 110)
+- Default subnet mask: 255.255.255.0 (prefix notation: /24)
+
+***Class D:**
+- Value in first octet: 224-239 (first 4 binary digits (leftmost bits) are 1110)
+- Multicast IP addresses --- they are not assigned to network devices. However, devices can "join" a multicast group (via its IP address) and receive messages sent to the IP
+- Subnet mask not applicable
+
+***Class E:**
+- Value in first octet: 240-255 (first 5 binary digits (leftmost bits) are 11110)
+- Experimental IP addresses, not used in practice
+- Subnet mask not applicable
+
+#### Private IP Address Ranges
+- 10.0.0.0/8
+- 172.16.0.0/12
+- 192.168.0.0/24
+
+
+- 169.254.0.0/16: Automatic Private IP Addressing (APIPA) --- A non--routable IP address which a network device assigns itself if it doesn't have a static IP address and cannot dynamically obtain an IP address (e.g. via a DHCP server)
+
 
 
 
