@@ -55,6 +55,11 @@
   - [Subnetting](#subnetting)
     - [IPv4 Address Classes](#ipv4-address-classes)
       - [Private IP Address Ranges](#private-ip-address-ranges)
+      - [Network Address](#network-address)
+      - [Directed Broadcast Address](#directed-broadcast-address)
+      - [Available Subnets on a Network](#available-subnets-on-a-network)
+      - [Available Host Addresses on a Subnet](#available-host-addresses-on-a-subnet)
+    - [Classless Inter-Domain Routing (CIDR)](#classless-inter-domain-routing-cidr)
   - [References](#references)
 
 ## Basics
@@ -477,6 +482,43 @@ netstat -p <protocol_name>
 
 
 - 169.254.0.0/16: Automatic Private IP Addressing (APIPA) --- A non--routable IP address which a network device assigns itself if it doesn't have a static IP address and cannot dynamically obtain an IP address (e.g. via a DHCP server)
+
+
+#### Network Address
+Obtained by populating all the host address bits with 0s.
+E.g. a subnet: 10.1.2.3/8 has a network address of 10.0.0.0
+![subnetting-network-addr](./img/subnetting-network-addr.jpg)
+
+#### Directed Broadcast Address
+Obtained by populating all the host address bits with 1s.
+E.g. a subnet: 10.1.2.3/8 has a directed broadcast address of 10.255.255.255
+![subnetting-broadcast-addr](./img/subnetting-broadcast-addr.jpg)
+
+#### Available Subnets on a Network
+Number of borrowed subnet bits =  selected subnet mask prefix - default class subnet mask prefix
+Available subnets = 2 ^ (number of borrowed subnet bits)
+
+E.g.:
+- For a network 130.2.0.0/16, if we select subnet mask prefix /24, we have
+Available subnets = 2 ^ (24 - 16) = 256 available subnets
+
+#### Available Host Addresses on a Subnet
+Number of host address bits = 32 - subnet mask prefix
+Available host addresses = (2 ^ (number of host address bits)) - 2 (Network address & broadcast address)
+E.g.:
+- For a network 192.0.2.0/30, we have:
+(2 ^ (32-30)) - 2 = 2 assignable host addresses
+
+- For a network 192.0.2.0/24, we have:
+(2 ^ (32-24)) - 2 = 254 assignable host addresses
+
+
+### Classless Inter-Domain Routing (CIDR)
+Opposite of subnetting.
+In subnetting, we add bits to default masks, in CIDR, we remove bits from default masks.
+Some sort of network summarization.
+![subnetting-cidr](./img/subnetting-cidr.jpg)
+
 
 
 
