@@ -60,6 +60,8 @@
       - [Available Subnets on a Network](#available-subnets-on-a-network)
       - [Available Host Addresses on a Subnet](#available-host-addresses-on-a-subnet)
     - [Classless Inter-Domain Routing (CIDR)](#classless-inter-domain-routing-cidr)
+  - [Wireshark](#wireshark)
+    - [Filtering](#filtering)
   - [References](#references)
 
 ## Basics
@@ -108,6 +110,7 @@ These are the units of data routed by different network layers/devices
 
 
 ### OSI Model
+![osi-model](./img/osi-model.jpg)
 
 #### Layer 1: Physical Layer
 PDU: bits.
@@ -280,6 +283,9 @@ The Router keeps an additional port information in its NAT Translation Table whi
 
 ### Transmission Control Protocol
 ![tcp-syn-ack](./img/tcp-syn-ack.jpg)
+![tcp-fin-ack](./img/tcp-fin-ack.jpg)
+![tcp-header](./img/tcp-header.jpg)
+
 - Connection-oriented
 - Three way handshake to establish connection
 - Offers reliability
@@ -519,6 +525,12 @@ In subnetting, we add bits to default masks, in CIDR, we remove bits from defaul
 Some sort of network summarization.
 ![subnetting-cidr](./img/subnetting-cidr.jpg)
 
+
+## Wireshark
+
+### Filtering
+- Display filters: e.g. `ftp`,  `tcp`, etc.
+- Capture filters: require a more basic syntax. E.g., `tcp port 21` for ftp.
 
 
 
