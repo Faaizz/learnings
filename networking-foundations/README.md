@@ -29,8 +29,8 @@
       - [Wi-Fi 6](#wi-fi-6)
   - [Protocols](#protocols)
     - [Address Resolution Protocol](#address-resolution-protocol)
-    - [Internet Control Messaging Protocol (ICMP)](#internet-control-messaging-protocol-icmp)
-    - [Internet Group Messaging Protocol (IGMP)](#internet-group-messaging-protocol-igmp)
+    - [Internet Control Message Protocol (ICMP)](#internet-control-message-protocol-icmp)
+    - [Internet Group Message Protocol (IGMP)](#internet-group-message-protocol-igmp)
     - [Domain Name Service (DNS)](#domain-name-service-dns)
     - [Transmission Control Protocol](#transmission-control-protocol)
     - [User Datagram Protocol](#user-datagram-protocol)
@@ -153,6 +153,8 @@ Some variations of the TCP/IP model are shown below:
 *5-layer TCP/IP*
 ![tcp-data](./img/tcp-data.jpg)
 *TCP/IP Protocol Data Units*
+![ip-v4-v6](./img/ip-v4-v6.jpg)
+*Internet Protocol Header v4 & v6*
 
 
 #### Some Common Protocols
@@ -248,8 +250,9 @@ The Router keeps an additional port information in its NAT Translation Table whi
 4. If a host is present on the network with the IP address, the host responds to the ARP request
 5. The destination host's MAC address is then obtained and encapsulated into the frame and the frame is sent accordingly
 
-### Internet Control Messaging Protocol (ICMP)
+### Internet Control Message Protocol (ICMP)
 ![icmp-header](./img/icmp-header.jpg)
+![icmp-messages](./img/icmp-messages.jpg)
 - Protocol number 1
 - Part of the IP suite
 - Does not carry any end user information
@@ -260,7 +263,7 @@ The Router keeps an additional port information in its NAT Translation Table whi
 - Type: what is the purpose of the packet? e.g. destination unreachable, redirect, echo request, echo response, etc.
 - Code: more granular specification of the purpose. E.g. destination unreachable -> destination unknown
 
-### Internet Group Messaging Protocol (IGMP)
+### Internet Group Message Protocol (IGMP)
 - Used for Multicasting in IPv4, IPv6 uses ICMPv6
 - Multicast: Single host -> multiple hosts
 - Allows hosts to join multicast groups
@@ -296,6 +299,7 @@ The Router keeps an additional port information in its NAT Translation Table whi
   then it can request retransmission of the missing packet from the sender
 
 ### User Datagram Protocol
+![udp-header](./img/udp-header.jpg)
 - Connectionless
 - No acknowledgement, no order
 - unreliable
