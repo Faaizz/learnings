@@ -12,6 +12,15 @@
     - [Authorization](#authorization)
     - [Admission Controllers](#admission-controllers)
     - [Conversion](#conversion)
+  - [Reconciliation: The Engine of a Declarative System](#reconciliation-the-engine-of-a-declarative-system)
+    - [`controller-manager`](#controller-manager)
+    - [`scheduler`](#scheduler)
+    - [`kubelet`](#kubelet)
+    - [`kube-proxy`](#kube-proxy)
+  - [Some components that are not part of core K8s but are needed to have a fully functioning cluster](#some-components-that-are-not-part-of-core-k8s-but-are-needed-to-have-a-fully-functioning-cluster)
+    - [Cluster DNS](#cluster-dns)
+    - [Ingress Controller](#ingress-controller)
+    - [External DNS](#external-dns)
   - [References](#references)
 
 ## Architecture Overview
@@ -98,6 +107,62 @@ kubectl api-versions
 kubectl api-resources 
 ```
 
+## Reconciliation: The Engine of a Declarative System
+```shell
+# Show resource tree
+kubectl tree <resource_type> <resource_name> # e.g. kubectl tree deploy my-deployment
+```
+
+The `.metadata.ownerReferences` object gives information about if (or not) a controller is managing a resource:
+```shell
+kubectl get ReplicaSet/<rep_set_name> -o jsonpath='{ .metadata.ownerReferences }' | jq
+```
+Sample result:
+```json
+[
+  {
+    "apiVersion": "apps/v1",
+    "blockOwnerDeletion": true,
+    "controller": true,
+    "kind": "Deployment",
+    "name": "deploy-name",
+    "uid": "c527577d-c0c0-42d2-80bf-84b1a5d52a31"
+  }
+]
+```
+
+### `controller-manager`
+- Control loops (controllers) live in the controller-manager.
+- There is no API endpoint to list all available controllers. A "hack" to get most (if not all) controllers would be: `kubectl -n kube-system get sa | grep controller`.
+
+### `scheduler`
+- Choses a node for the pods to run on, fills out the `nodeName` field
+
+### `kubelet`
+- Runs on worker nodes
+- Gets the pods that should be running on the worker node via the API server and tells the container runtime (e.g. docker) to run the pod containers
+
+### `kube-proxy`
+- Runs on worker nodes
+- Updates the iptables rules on the node's kernel
+- Facilitates routing between cluster pods (via services)
+
+
+## Some components that are not part of core K8s but are needed to have a fully functioning cluster
+
+### Cluster DNS
+- Required to resolve service names into Cluster IPs
+- Runs as a pod within the cluster
+- Connects to the external world by routing out requests it cannot resolve
+
+### Ingress Controller
+- Required to deploy ingress pods
+- Runs as a pod in the cluster
+
+### External DNS
+- Runs as a pod in the cluster
+- Required to resolve assigned host names to LoadBalancer services that point to ingress resources
+- Looks up the service's public IP and creates appropriate public DNS records
 
 ## References
 - [Advanced Kubernetes: 1 Core Concepts](https://www.linkedin.com/learning/advanced-kubernetes-1-core-concepts)
