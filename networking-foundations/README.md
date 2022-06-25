@@ -170,12 +170,15 @@ Some variations of the TCP/IP model are shown below:
 
 #### Dynamic Host Configuration Protocol
 Dynamically assign IP addresses to Hosts on a network.
+- Client: UDP Port 68
+- Server: UDP Port 67
+
 ![dhcp-v4](./img/dhcp-v4.jpg)
 ![dhcp-request](./img/dhcp-request.jpg)
 
 **Steps to DHCP (IP v4)**:
 1. Discover: Host sends out a broadcast over the subnet to any available DHCP servers in an attempt to obtain their IP addresses
-2. Offer: All DHCP servers that receive the Host's discover message send back an offer message with their respective IP addresses
+2. Offer: All DHCP servers that receive the Host's discover message send back an offer message with their respective IP addresses they're offering
 3. Request: The Host makes a request for an IP address to the first DHCP server whose offer it receives
 4. Acknowledge: The DHCP server provides the Host with an IP address, the network subnet mask, the address of the networks DNS server, and any other relevant information
 
@@ -272,7 +275,9 @@ The Router keeps an additional port information in its NAT Translation Table whi
 - To facilitate multicasting to only members of the multicast groups, switches umplement IGMP snooping
 
 ### Domain Name Service (DNS)
+- TCP/UDP Port 53
 ![dns-resolution](./img/dns-resolution.jpg)
+![dns-record-types](./img/dns-record-types.jpg)
 1. Host A wants to send traffic to www.a.com
 2. Host A checks its DNS cache for www.a.com, if a matching record is found, Host A encapsulates the packet wit the found IP address
 3. If a matching record is not found, Host A makes a DNS query to its DNS server (UDP port 53)
@@ -393,7 +398,7 @@ HTTP Response Code
 
 
 ### File Transfer Protocol (FTP)
-- TCP port 21 for initialization 
+- TCP port 21 for initialization/commands 
 - TCP port 20 for transfer (active mode), or some port specified by server (passive mode)
 
 ### Server Message Block (SMB)
