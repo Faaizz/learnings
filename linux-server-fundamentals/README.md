@@ -12,6 +12,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 [Managing Services](#managing-services)  
 [Automate & Schedule Jobs](#automate-and-schedule-jobs)  
 [Linux Devices & Filesystem](#linux-devices-and-filesystem)  
+[Miscellaneous Commands](#miscellaneous-commands) 
 
 ## System Information
 - `/etc/*release`: OS Info.
@@ -335,6 +336,13 @@ Information about running processes, the kernel, attached devices etc. can be fo
 - `/proc/`
 - `/sys/`
 - `/dev/`
+
+
+## Miscellaneous Commands
+```shell
+# Query DNS hsotname Start of Authority (SOA) Record
+nslookup -type=SOA cdcrk.com
+```
 
 
 ## References
