@@ -159,7 +159,7 @@ less -N /path/to/file
 - `stdout`: Redirect a program's `stdout` using `>`
 - `stderr`: Redirect a program's `stderr` using `2>`
 
-To redirect stdout` and `stderr` to the same location, we can do: `ls Docs ff > /dev/null 2>&1`.
+To redirect `stdout` and `stderr` to the same location, we can do: `ls Docs ff > /dev/null 2>&1`.
 `2>&1` redirects `stderr` (`2>`) into `stdout` (`&1`).
 
 
@@ -267,7 +267,7 @@ Cron jobs take a scheduling format:
 - Days of the week go from 0-6, with `0` Sunday and `6` Saturday
 - `1-5` can be specified to represent every weekday
 - Months go from 1-12, with `1` January and `12` December
-- Multiples values can be specified seperated by a comma. E.g. `1,2,3` can be used to specify every 1st, 2nd, and 3rd day of the month
+- Multiples values can be specified separated by a comma. E.g. `1,2,3` can be used to specify every 1st, 2nd, and 3rd day of the month
 
 ### Personal Scheduling
 #### Personal `crontab`s
