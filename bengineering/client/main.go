@@ -3,26 +3,36 @@ package main
 import (
 	"flag"
 	"log"
-	"net/http"
 
-	"github.com/faaizz/learnings/bengineering/client/async"
+	"github.com/faaizz/learnings/bengineering/client/block"
+	"github.com/faaizz/learnings/bengineering/client/noblock"
 )
 
 var mode string
-var handlerFunc func(http.ResponseWriter, *http.Request)
+var err error
 
 func init() {
-	flag.StringVar(&mode, "mode", "async", "client type")
+	flag.StringVar(&mode, "mode", "block", "client type")
 }
 
 func main() {
+	bUrl := "http://localhost:8080"
+	jobPath := "/job"
+
 	flag.Parse()
 	log.Printf("mode: %s", mode)
 
 	switch mode {
 	default:
 		log.Fatal("please provide a valid mode")
-	case "async":
-		async.Request()
+	case "block":
+		err = block.Request(bUrl, jobPath, 5, 10)
+	case "noblock":
+		err = noblock.Request(bUrl, jobPath)
 	}
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
