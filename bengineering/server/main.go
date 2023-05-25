@@ -6,14 +6,19 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/faaizz/learnings/bengineering/server/async"
+	"github.com/faaizz/learnings/bengineering/server/poll/long"
+	"github.com/faaizz/learnings/bengineering/server/poll/short"
 )
 
 var mode string
-var handlerFunc func(http.ResponseWriter, *http.Request)
+var ah AsyncHandler
+
+type AsyncHandler interface {
+	AsyncHandle(w http.ResponseWriter, r *http.Request)
+}
 
 func init() {
-	flag.StringVar(&mode, "mode", "async", "server type")
+	flag.StringVar(&mode, "mode", "short", "server type")
 }
 
 func main() {
@@ -23,15 +28,17 @@ func main() {
 	switch mode {
 	default:
 		log.Fatal("please provide a valid mode")
-	case "async":
-		handlerFunc = async.Handler
+	case "short":
+		ah = short.New()
+	case "long":
+		ah = long.New()
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello!")
 	})
 	http.HandleFunc("/job", func(w http.ResponseWriter, r *http.Request) {
-		handlerFunc(w, r)
+		ah.AsyncHandle(w, r)
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
