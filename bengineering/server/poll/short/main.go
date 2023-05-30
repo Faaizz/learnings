@@ -13,6 +13,7 @@ var Requests map[string]string
 
 type AsyncHandler struct {
 	requests map[string]string
+	*common.BaseAsyncHandler
 }
 
 func New() *AsyncHandler {

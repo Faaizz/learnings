@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -14,6 +13,7 @@ var mode string
 var ah AsyncHandler
 
 type AsyncHandler interface {
+	RootHandle(w http.ResponseWriter, r *http.Request)
 	AsyncHandle(w http.ResponseWriter, r *http.Request)
 }
 
@@ -35,7 +35,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello!")
+		ah.RootHandle(w, r)
 	})
 	http.HandleFunc("/job", func(w http.ResponseWriter, r *http.Request) {
 		ah.AsyncHandle(w, r)
