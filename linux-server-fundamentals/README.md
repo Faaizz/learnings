@@ -337,5 +337,53 @@ Information about running processes, the kernel, attached devices etc. can be fo
 - `/dev/`
 
 
+## Getting Help
+```shell
+# Display command manual
+man COMMAND
+# Search manual for term
+man -k SEARCH_TERM
+```
+
+Manual Sections
+| Section | Description                                       |
+| ------- | ------------------------------------------------- |
+| 1       | User commands                                     |
+| 2       | Kernel system calls                               |
+| 3       | High-level unix programming library documentation |
+| 4       | Device interface and driver information           |
+| 5       | File descriptions (system configuration files)    |
+| 6       | Games                                             |
+| 7       | File formats, convention, and encodings           |
+| 8       | System commands and servers                       |
+
+## Shortcuts
+### Command Line Editing
+| Keystroke | Action                                 |
+| --------- | -------------------------------------- |
+| CTRL+B    | Move cursor left                       |
+| CTRL+F    | Move cursor right                      |
+| CTRL+P    | Previous command                       |
+| CTRL+N    | Next command                           |
+| CTRL+A    | Move cursor to beginning of line       |
+| CTRL+E    | Move cursor to end of line             |
+| CTRL+W    | Erase preceding word                   |
+| CTRL+U    | Erase from cursor to beginning of line |
+| CTRL+Y    | Paste string erased with CTRL+U        |
+| CTRL+K    | Erase form cursor to end of line       |
+
+
+## Miscellaneous Commands
+```shell
+# Query DNS hsotname Start of Authority (SOA) Record
+nslookup -type=SOA cdcrk.com
+
+# Searching + globbing
+grep TERM /path/to/files/*  # lists the files that contain the search term
+find /path/to/search -name FILE_TO_FIND -print  # find files that match and print their corresponding paths
+
+```
+
+
 ## References
 - [Linux Server Course - System Configuration and Operation](https://www.youtube.com/watch?v=WMy3OzvBWc0)
