@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "github.com/faaizz/learnings/bengineering/grpc/server/model";
+
+package todoPackage;
+
+service Todo {
+
+  rpc createTodo(TodoItem) returns (TodoItem);
+  rpc createTodos(stream TodoItem) returns (TodoItems);
+  rpc readTodos(void) returns (stream TodoItem);
+
+}
+
+message void {}
+
+message TodoItem {
+  int32 id = 1;
+  string text = 2;
+}
+
+message TodoItems {
+  repeated TodoItem items = 1;
+}

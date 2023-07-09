@@ -9,5 +9,6 @@
 - [Networking Foundations](./networking-foundations/README.md)
 - [Software Architecture Foundations](./software-architecture-foundations/README.md)
 - [Using Ansible Playbooks](./using-ansible-playbooks/README.md)
+- [gRPC: An Example](./grpc/README.md)
 
 - [ROS 2 Tutorial](https://github.com/Faaizz/ros_gazebo_workspace/blob/main/notes.md)
