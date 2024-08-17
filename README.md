@@ -10,5 +10,6 @@
 - [Software Architecture Foundations](./software-architecture-foundations/README.md)
 - [Using Ansible Playbooks](./using-ansible-playbooks/README.md)
 - [gRPC: An Example](./grpc/README.md)
+- [Fundamentals of Operating Systems](./fundamentals-of-operating-systems/README.md)
 
 - [ROS 2 Tutorial](https://github.com/Faaizz/ros_gazebo_workspace/blob/main/notes.md)
