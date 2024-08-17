@@ -12,6 +12,7 @@ gcc -S main.c
 less main.s
 
 # debug execution
+# see documentation at: https://sourceware.org/gdb/current/onlinedocs/gdb
 gdb ./main
 
 # set function breakpoint
