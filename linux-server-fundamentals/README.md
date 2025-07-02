@@ -34,10 +34,12 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 - `ip route`: List routing information.
 - `dig`: DNS lookup.
 - `/etc/hosts`: Hosts file. Local DNS.
-- `/etc/nsswitch.conf`.
+- `/etc/nsswitch.conf`: DNS resolution preference.
 - `/etc/netplan` folder holds *yaml* files for manual network configuration. Run `netplan apply`.
 - `nmtui`: (in Ubuntu) to invoke Network Manager on the terminal.
 - CentOS & RedHat Linux network configuration files are held in the `/etc/sysconfig`. To reflect changes, run `service network restart`.
+- `netstat`: basic network debugging. Use `-lunt` flags to print open TCP & UDP ports.
+- `lsof -i`: list programs currently listening on or using ports. You can filter by protocol, host, or/and port using the following syntax: `lsof -i protocol@host:port`. Any one of the parts can be left out. E.g., filtering for host only would be: `lsof -i @127.0.0.1` or port only would be: `lsof -i :9889`. `lsof -i 4` lists IPv4 only entries.
 
 
 ## Manage Storage
