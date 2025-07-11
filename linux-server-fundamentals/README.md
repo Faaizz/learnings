@@ -342,6 +342,69 @@ Information about running processes, the kernel, attached devices etc. can be fo
 - `/dev/`
 
 
+## Shell Scripting
+### Special Variables
+Here'a a list of some special variables that can be used in shell scripts:
+| Variable | Description                              |
+| -------- | ---------------------------------------- |
+| `$?`     | Exit status of the last command run      |
+| `$$`     | Process ID of the current shell          |
+| `$#`     | Number of arguments passed to the script |
+| `$@`     | All arguments passed to the script       |
+| `$<N>`   | The Nth argument passed to the script    |
+### Tests
+Bash and some other shell environments have in-built support for the `test` command via `[ <TEST> ]`.
+Here's a reference to some common test operators:
+| Test Type                | Operator(s)         | Description                                                                              |
+| ------------------------ | ------------------- | ---------------------------------------------------------------------------------------- |
+| File exists              | `-e FILE`           | True if FILE exists                                                                      |
+| Directory                | `-d FILE`           | True if FILE is a directory                                                              |
+| Regular file             | `-f FILE`           | True if FILE is a regular file                                                           |
+| Symbolic link            | `-h FILE`           | True if FILE is a symbolic link                                                          |
+| Block device             | `-b FILE`           | True if FILE is a block device                                                           |
+| Character device         | `-c FILE`           | True if FILE is a character device                                                       |
+| Socket                   | `-S FILE`           | True if FILE is a socket                                                                 |
+| Executable               | `-x FILE`           | True if FILE is executable                                                               |
+| Readable                 | `-r FILE`           | True if FILE is readable                                                                 |
+| Writable                 | `-w FILE`           | True if FILE is writable                                                                 |
+| Newer than               | `FILE1 -nt FILE2`   | True if FILE1 is newer than FILE2                                                        |
+| Older than               | `FILE1 -ot FILE2`   | True if FILE1 is older                                                                   |
+| Identical                | `FILE1 -ef FILE2`   | True if FILE1 and FILE2 are identical. I.e., they link to the same inode number & device |
+| String equals            | `STRING1 = STRING2` | True if strings are equal                                                                |
+| String empty             | `-z STRING`         | True if STRING is empty                                                                  |
+| Integer equal            | `INT1 -eq INT2`     | True if integers are equal                                                               |
+| Integer greater          | `INT1 -gt INT2`     | True if INT1 is greater than INT2                                                        |
+| Integer less             | `INT1 -lt INT2`     | True if INT1 is less than INT2                                                           |
+| Integer greater or equal | `INT1 -ge INT2`     | True if INT1 is greater than or equal to INT2                                            |
+| Integer less or equal    | `INT1 -le INT2`     | True if INT1                                                                             |
+
+### `if` Syntax
+```bash
+if CONDITION
+then
+    # Code to run if CONDITION is true
+else
+    # Code to run if CONDITION is false
+fi
+```
+
+### `for` Syntax
+```bash
+for VARIABLE in LIST
+do
+    # Code to run for each item in LIST
+done
+``` 
+
+### `while` Syntax
+`CONDITION` below is tested based on it's exit status. If it returns 0, the loop continues, otherwise it stops.
+```bash
+while CONDITION
+do
+    # Code to run while CONDITION is true
+done
+```
+
 ## Getting Help
 ```shell
 # Display command manual
