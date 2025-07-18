@@ -59,6 +59,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
   - [Shortcuts](#shortcuts)
     - [Command Line Editing](#command-line-editing)
   - [Miscellaneous Commands](#miscellaneous-commands)
+  - [Utilities](#utilities)
   - [References](#references)
 
 
@@ -526,6 +527,8 @@ find /path/to/search -name FILE_TO_FIND -print  # find files that match and prin
 
 ```
 
+## Utilities
+Consider installing the [GNU Coreutils](https://www.gnu.org/software/coreutils/) on a Linux server for enhanced command-line utilities.
 
 ## References
 - [Linux Server Course - System Configuration and Operation](https://www.youtube.com/watch?v=WMy3OzvBWc0)
