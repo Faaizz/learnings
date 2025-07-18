@@ -32,6 +32,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
     - [`awk` and `sed` Basic Usage](#awk-and-sed-basic-usage)
     - [Looking for Files with `find`](#looking-for-files-with-find)
     - [Copying Files over Network Using `scp` and `rsync`](#copying-files-over-network-using-scp-and-rsync)
+    - [Creating tomporary files with `mktemp`](#creating-tomporary-files-with-mktemp)
   - [Managing Services](#managing-services)
     - [`SysV` and `SystemD` Initialization](#sysv-and-systemd-initialization)
     - [Managing Services](#managing-services-1)
@@ -267,6 +268,14 @@ scp ./file1 user@centos:/home
 scp user@centos:/home/file2 ./
 # rsync can recursively copy directories
 rsync -av user@centos:/home/Desktop ./
+```
+
+### Creating tomporary files with `mktemp`
+```shell
+# Create a temporary file in /tmp with a random name starting with 'tempfile'
+TMPFILE=$(mktemp /tmp/tempfile.XXXXXX)
+
+cat /proc/interrupts > $TMPFILE
 ```
 
 ## Managing Services
