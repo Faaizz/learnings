@@ -54,6 +54,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
     - [`if` Syntax](#if-syntax)
     - [`for` Syntax](#for-syntax)
     - [`while` Syntax](#while-syntax)
+    - [`trap` Syntax](#trap-syntax)
   - [Getting Help](#getting-help)
   - [Shortcuts](#shortcuts)
     - [Command Line Editing](#command-line-editing)
@@ -459,6 +460,23 @@ while CONDITION
 do
     # Code to run while CONDITION is true
 done
+```
+
+### `trap` Syntax
+`trap` command allows you to "trap" signals and run a command when the signal is received.
+It has the syntax `trap 'COMMAND' SIGNAL`
+```shell
+#!/bin/bash
+TMPFILE1=$(mktemp /tmp/tempfile1.XXXXXX)
+TMPFILE2=$(mktemp /tmp/tempfile2.XXXXXX)
+# Clean up temporary files on interrupt
+trap 'rm -f $TMPFILE1 $TMPFILE2; exit 1' INT
+# Simulate a long-running process
+cat /proc/interrupts > $TMPFILE1
+sleep 10000 # Simulate long-running process
+cat /proc/interrupts > $TMPFILE2
+diff $TMPFILE1 $TMPFILE2
+rm -f $TMPFILE1 $TMPFILE2
 ```
 
 ## Getting Help
