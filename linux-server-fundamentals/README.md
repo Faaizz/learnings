@@ -7,6 +7,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
   - [System Information](#system-information)
   - [Kernel and Boot Concepts](#kernel-and-boot-concepts)
   - [Configure and Verify Network Connections](#configure-and-verify-network-connections)
+    - [`ipvlan`](#ipvlan)
   - [Manage Storage](#manage-storage)
     - [GUID Partition Table (GPT) \& Master Boot Record (MBR)](#guid-partition-table-gpt--master-boot-record-mbr)
     - [Filesystem Hierarchy](#filesystem-hierarchy)
@@ -94,6 +95,27 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 - `netcat`: can connect to local / remote TCP/UDP ports, listen on ports, redirect stdio to/fro network connetions, etc. Use `netcat -l PORT` to listen on a port or `netcat HOST PORT`to connect to a port.
 - `nmap`: scan machine / network for open ports. E.g., `nmap 10.1.2.2`. More informationat https://namp.org.
 
+### `ipvlan`
+Example `ipvlan` implementation according to [IPVLAN Driver HOWTO](https://www.kernel.org/doc/Documentation/networking/ipvlan.txt).
+```shell
+# Create two network namespaces - ns0, ns1
+ip netns add ns0
+ip netns add ns1
+# Create two ipvlan slaves on eth0 (master device)
+ip link add link eth0 ipvl0 type ipvlan mode l2
+ip link add link eth0 ipvl1 type ipvlan mode l2
+# Assign slaves to the respective network namespaces
+ip link set dev ipvl0 netns ns0
+ip link set dev ipvl1 netns ns1
+# Now switch to the namespace (ns0 or ns1) to configure the slave devices
+# - For ns0 (perform similar steps for ns1 with the corresponding ipvl1 device)
+ip netns exec ns0 bash
+ip link set dev ipvl0 up
+ip link set dev lo up
+ip -4 addr add 127.0.0.1 dev lo
+ip -4 addr add $IPADDR dev ipvl0
+ip -4 route add default via $ROUTER dev ipvl0
+```
 
 ## Manage Storage
 
