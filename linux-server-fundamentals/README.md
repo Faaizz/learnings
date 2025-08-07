@@ -72,6 +72,8 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 
 ## System Information
 - `/etc/*release`: OS Info.
+- `uptime`: Check how long machine has been on
+- `free`: Check memory information (free/used)
 
 ## Kernel and Boot Concepts
 - `/etc/modules`: Kernel modules to load at boot time.
@@ -227,7 +229,8 @@ Main config file is at `/etc/yum.conf`. All repos are stored in `/etc/yum.repos.
 
 
 ## Manipulating Files
-`dmesg` is a command that lets us view logs. E.g. `dmesg | grep "search-term"`.
+- `dmesg` is a command that lets us view logs. E.g. `dmesg | grep "search-term"`.
+- `df -h`: get information about all mounted filesystems
 
 ### `less` 
 Lets us use `Pg Up` and `Pg Dn`. We can also search forward by typing `/search-term` and pushing Enter, type `/` and press enter to find more occurence.
