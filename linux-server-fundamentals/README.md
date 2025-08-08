@@ -56,6 +56,12 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
     - [`for` Syntax](#for-syntax)
     - [`while` Syntax](#while-syntax)
     - [`trap` Syntax](#trap-syntax)
+  - [Development Tools](#development-tools)
+    - [C Compiler](#c-compiler)
+    - [Library Locations](#library-locations)
+    - [Dynamic Linking](#dynamic-linking)
+      - [The runtime dynamic linker/loader - `ld.so`](#the-runtime-dynamic-linkerloader---ldso)
+      - [List Shared Libraries](#list-shared-libraries)
   - [Getting Help](#getting-help)
   - [Shortcuts](#shortcuts)
     - [Command Line Editing](#command-line-editing)
@@ -500,6 +506,73 @@ sleep 10000 # Simulate long-running process
 cat /proc/interrupts > $TMPFILE2
 diff $TMPFILE1 $TMPFILE2
 rm -f $TMPFILE1 $TMPFILE2
+```
+
+## Development Tools
+### C Compiler
+Most distributions don;t include the tools necessary to compile C code by default. Install `build-essential` on Debian-based systems or the "Developer Tools" `yum groupinstall` for Fedora/CentOS systems.
+```shell
+# Compiling C code
+cat <<EOF > aux.c
+#include <stdio.h>
+int hello_call() {
+  printf("Hello, World!\n");
+}
+EOF
+
+cat <<EOF > main.c
+void hello_call();
+int main() {
+  hello_call();
+}
+EOF
+
+# Compile into object files
+cc -c main.c aux.c
+# Link object files into an executable
+cc -o hello main.o aux.o
+
+# Link against a static library located in one of the default locations
+cc -o hello main.o aux.o -lsample
+```
+### Library Locations
+Standard library (& include) locations, include:
+- `/lib/`
+- `/usr/lib/`
+- `/usr/include/`
+
+To make the preprocessor search for header files in a custom location, use the `-I` flag:
+```shell
+# Compile with a custom header file location
+cc -c -I/custom/dir main.c aux.c
+```
+Further, includes with double-quote `""` indicate that the header file is not in a system directory, usually indicating that it's in the same directory as the source file. E.g.,:
+```c
+#include "aux.h"  // This will look for aux.h in the same directory as the source file
+#include <stdio.h> // This will look for stdio.h in the system include directories
+```
+
+To link against a library in a custom location, use the `-L` flag:
+```shell
+# Link against a shared library located in /custom/dir/libsample.so
+cc -o hello main.o aux.o -L/custom/dir -lsample
+```
+
+### Dynamic Linking
+#### The runtime dynamic linker/loader - `ld.so`
+Programs don't often know where to find shared libraries, they only often know the library names and some hint at where they might be located. The dynamic linker/loader `ld.so` - also dynamically linked to the program with its own location explicitly specified - is responsible for finding the shared libraries and loading them into memory when a program is run.
+You can get help about the dynamic linker via `man 8 ld.so`.
+
+It uses the following locations to find shared libraries:
+- The `LD_LIBRARY_PATH` environment variable: first place to look for shared libraries. Do not set this at compile time or in startup scripts. Use this only as a last resort, and if it must be used, prefer to set this in a wrapper script that runs the target program.
+- Program's runtime library search path (rpath) - if specified. To specify rpath, use the `-Wl,-rpath=/path/to/lib` flag when linking. E.g., `cc -o hello main.o aux.o -Wl,-rpath=/path/to/lib -L/path/to/lib -lsample`. Note that `L` is still required for the linker to know where to find the library during linking. Although not preferred, the `patchelf` program can be used to update rpath on an existing executable.
+- dynamic linker system cache at `/etc/ld.so.cache`: this is a cache of shared libraries found in directories listed in `/etc/ld.so.conf` - & correspondingly files contained in `/etc/ld.so.conf.d`. If modifications are made to these files, run `ldconfig -v` to update the cache.
+
+
+#### List Shared Libraries
+To list the shared libraries that an executable is linked against, use `ldd`:
+```shell
+ldd /bin/bash
 ```
 
 ## Getting Help
