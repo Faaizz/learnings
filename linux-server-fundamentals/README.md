@@ -66,6 +66,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
   - [Shortcuts](#shortcuts)
     - [Command Line Editing](#command-line-editing)
   - [Miscellaneous Commands](#miscellaneous-commands)
+  - [Desktop Environments](#desktop-environments)
   - [Utilities](#utilities)
   - [References](#references)
 
@@ -624,6 +625,14 @@ grep TERM /path/to/files/*  # lists the files that contain the search term
 find /path/to/search -name FILE_TO_FIND -print  # find files that match and print their corresponding paths
 
 ```
+
+## Desktop Environments
+- Wayland protocol is the "new cool"
+- Check the value of `$WAYLAND_DISPLAY` to know if you're runninig wayland.
+- `libinput` is a library used by Wayland compositors (& other window managers) to collect messages from peripherials through the linux kernel.
+It presents an utility (also named `libinput`) to inspect input devices and events.
+`libinput list-devices`: provides information about connected input devices
+`libinput debug-events --show-keycodes`: listens for input events  
 
 ## Utilities
 Consider installing the [GNU Coreutils](https://www.gnu.org/software/coreutils/) on a Linux server for enhanced command-line utilities.
