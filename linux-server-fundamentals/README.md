@@ -2,19 +2,79 @@
 Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com/watch?v=WMy3OzvBWc0&t=2281s).
 
 ## Table of Content
-[System Information](#system-information)  
-[Kernel & Boot Concepts](#kernel-and-boot-concepts)  
-[Network Connections](#configure-and-verify-network-connections)  
-[Manage Storage](#manage-storage)  
-[Install, Update, & Configure Software](#install-update-and-configure-software)  
-[Managing Users & Groups](#managing-users-and-groups)  
-[Manipulating Files](#manipulating-files)  
-[Managing Services](#managing-services)  
-[Automate & Schedule Jobs](#automate-and-schedule-jobs)  
-[Linux Devices & Filesystem](#linux-devices-and-filesystem)  
+- [Linux Server- System Configuration and Operation](#linux-server--system-configuration-and-operation)
+  - [Table of Content](#table-of-content)
+  - [System Information](#system-information)
+  - [Kernel and Boot Concepts](#kernel-and-boot-concepts)
+  - [Configure and Verify Network Connections](#configure-and-verify-network-connections)
+    - [`ipvlan`](#ipvlan)
+  - [Manage Storage](#manage-storage)
+    - [GUID Partition Table (GPT) \& Master Boot Record (MBR)](#guid-partition-table-gpt--master-boot-record-mbr)
+    - [Filesystem Hierarchy](#filesystem-hierarchy)
+      - [Navigating the Filesystem](#navigating-the-filesystem)
+    - [Creating Partitions](#creating-partitions)
+    - [Formatting Filesystems](#formatting-filesystems)
+    - [Mounting Partitions](#mounting-partitions)
+    - [Logical Volume Manager (LVM)](#logical-volume-manager-lvm)
+  - [Install, Update, and Configure Software](#install-update-and-configure-software)
+    - [Installing Tarballs](#installing-tarballs)
+    - [Managig .deb](#managig-deb)
+    - [Configuring APT Repositories](#configuring-apt-repositories)
+    - [Managing RPM Packages](#managing-rpm-packages)
+    - [Configuring YUM Repositories](#configuring-yum-repositories)
+  - [Managing Users and Groups](#managing-users-and-groups)
+    - [Common tools](#common-tools)
+    - [User Profiles](#user-profiles)
+  - [Manipulating Files](#manipulating-files)
+    - [`less`](#less)
+    - [`stdin`, `stdout`, `stderr`](#stdin-stdout-stderr)
+    - [`/dev/null`, `tee`, `xargs`](#devnull-tee-xargs)
+    - [Text Manipulation](#text-manipulation)
+    - [`awk` and `sed` Basic Usage](#awk-and-sed-basic-usage)
+    - [Looking for Files with `find`](#looking-for-files-with-find)
+    - [Copying Files over Network Using `scp` and `rsync`](#copying-files-over-network-using-scp-and-rsync)
+    - [Creating tomporary files with `mktemp`](#creating-tomporary-files-with-mktemp)
+  - [Managing Services](#managing-services)
+    - [`SysV` and `SystemD` Initialization](#sysv-and-systemd-initialization)
+    - [Managing Services](#managing-services-1)
+      - [With `SysV`](#with-sysv)
+      - [With `SystemD`](#with-systemd)
+  - [Automate and Schedule Jobs](#automate-and-schedule-jobs)
+    - [System-Wide Scheduling](#system-wide-scheduling)
+    - [Personal Scheduling](#personal-scheduling)
+      - [Personal `crontab`s](#personal-crontabs)
+      - [`at` Daemon](#at-daemon)
+    - [Foreground and Background Processes](#foreground-and-background-processes)
+      - [Using `nohup` to keep a Process Running even if User Logs Out](#using-nohup-to-keep-a-process-running-even-if-user-logs-out)
+  - [Linux Devices and Filesystem](#linux-devices-and-filesystem)
+    - [Finding Local Devices](#finding-local-devices)
+    - [Linux Virtual Filesystems](#linux-virtual-filesystems)
+  - [Shell Scripting](#shell-scripting)
+    - [Special Variables](#special-variables)
+    - [Tests](#tests)
+    - [`if` Syntax](#if-syntax)
+    - [`for` Syntax](#for-syntax)
+    - [`while` Syntax](#while-syntax)
+    - [`trap` Syntax](#trap-syntax)
+  - [Development Tools](#development-tools)
+    - [C Compiler](#c-compiler)
+    - [Library Locations](#library-locations)
+    - [Dynamic Linking](#dynamic-linking)
+      - [The runtime dynamic linker/loader - `ld.so`](#the-runtime-dynamic-linkerloader---ldso)
+      - [List Shared Libraries](#list-shared-libraries)
+  - [Getting Help](#getting-help)
+  - [Shortcuts](#shortcuts)
+    - [Command Line Editing](#command-line-editing)
+  - [Miscellaneous Commands](#miscellaneous-commands)
+  - [Desktop Environments](#desktop-environments)
+  - [Utilities](#utilities)
+  - [References](#references)
+
 
 ## System Information
 - `/etc/*release`: OS Info.
+- `uptime`: Check how long machine has been on
+- `free`: Check memory information (free/used)
 
 ## Kernel and Boot Concepts
 - `/etc/modules`: Kernel modules to load at boot time.
@@ -34,11 +94,37 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 - `ip route`: List routing information.
 - `dig`: DNS lookup.
 - `/etc/hosts`: Hosts file. Local DNS.
-- `/etc/nsswitch.conf`.
+- `/etc/nsswitch.conf`: DNS resolution preference.
 - `/etc/netplan` folder holds *yaml* files for manual network configuration. Run `netplan apply`.
 - `nmtui`: (in Ubuntu) to invoke Network Manager on the terminal.
 - CentOS & RedHat Linux network configuration files are held in the `/etc/sysconfig`. To reflect changes, run `service network restart`.
+- `netstat`: basic network debugging. Use `-lunt` flags to print open TCP & UDP ports.
+- `lsof -i`: list programs currently listening on or using sockets. You can filter by protocol, host, or/and port using the following syntax: `lsof -i protocol@host:port`. Any one of the parts can be left out. E.g., filtering for host only would be: `lsof -i @127.0.0.1` or port only would be: `lsof -i :9889`. `lsof -i 4` lists IPv4 only entries. To filter for Unix domain sockets, run `lsof -U`.
+- `tcpdump`: can be used to report on every packet that flows through a network interface. E.g., `tcpdump -i lo tcp port 7777` prints header information about every TCP IP packet through port 7777. heck the pcap-filter(76) manual page for more usage information.
+- `netcat`: can connect to local / remote TCP/UDP ports, listen on ports, redirect stdio to/fro network connetions, etc. Use `netcat -l PORT` to listen on a port or `netcat HOST PORT`to connect to a port.
+- `nmap`: scan machine / network for open ports. E.g., `nmap 10.1.2.2`. More informationat https://namp.org.
 
+### `ipvlan`
+Example `ipvlan` implementation according to [IPVLAN Driver HOWTO](https://www.kernel.org/doc/Documentation/networking/ipvlan.txt).
+```shell
+# Create two network namespaces - ns0, ns1
+ip netns add ns0
+ip netns add ns1
+# Create two ipvlan slaves on eth0 (master device)
+ip link add link eth0 ipvl0 type ipvlan mode l2
+ip link add link eth0 ipvl1 type ipvlan mode l2
+# Assign slaves to the respective network namespaces
+ip link set dev ipvl0 netns ns0
+ip link set dev ipvl1 netns ns1
+# Now switch to the namespace (ns0 or ns1) to configure the slave devices
+# - For ns0 (perform similar steps for ns1 with the corresponding ipvl1 device)
+ip netns exec ns0 bash
+ip link set dev ipvl0 up
+ip link set dev lo up
+ip -4 addr add 127.0.0.1 dev lo
+ip -4 addr add $IPADDR dev ipvl0
+ip -4 route add default via $ROUTER dev ipvl0
+```
 
 ## Manage Storage
 
@@ -144,7 +230,8 @@ Main config file is at `/etc/yum.conf`. All repos are stored in `/etc/yum.repos.
 
 
 ## Manipulating Files
-`dmesg` is a command that lets us view logs. E.g. `dmesg | grep "search-term"`.
+- `dmesg` is a command that lets us view logs. E.g. `dmesg | grep "search-term"`.
+- `df -h`: get information about all mounted filesystems
 
 ### `less` 
 Lets us use `Pg Up` and `Pg Dn`. We can also search forward by typing `/search-term` and pushing Enter, type `/` and press enter to find more occurence.
@@ -215,6 +302,14 @@ scp ./file1 user@centos:/home
 scp user@centos:/home/file2 ./
 # rsync can recursively copy directories
 rsync -av user@centos:/home/Desktop ./
+```
+
+### Creating tomporary files with `mktemp`
+```shell
+# Create a temporary file in /tmp with a random name starting with 'tempfile'
+TMPFILE=$(mktemp /tmp/tempfile.XXXXXX)
+
+cat /proc/interrupts > $TMPFILE
 ```
 
 ## Managing Services
@@ -337,6 +432,153 @@ Information about running processes, the kernel, attached devices etc. can be fo
 - `/dev/`
 
 
+## Shell Scripting
+### Special Variables
+Here'a a list of some special variables that can be used in shell scripts:
+| Variable | Description                              |
+| -------- | ---------------------------------------- |
+| `$?`     | Exit status of the last command run      |
+| `$$`     | Process ID of the current shell          |
+| `$#`     | Number of arguments passed to the script |
+| `$@`     | All arguments passed to the script       |
+| `$<N>`   | The Nth argument passed to the script    |
+### Tests
+Bash and some other shell environments have in-built support for the `test` command via `[ <TEST> ]`.
+Here's a reference to some common test operators:
+| Test Type                | Operator(s)         | Description                                                                              |
+| ------------------------ | ------------------- | ---------------------------------------------------------------------------------------- |
+| File exists              | `-e FILE`           | True if FILE exists                                                                      |
+| Directory                | `-d FILE`           | True if FILE is a directory                                                              |
+| Regular file             | `-f FILE`           | True if FILE is a regular file                                                           |
+| Symbolic link            | `-h FILE`           | True if FILE is a symbolic link                                                          |
+| Block device             | `-b FILE`           | True if FILE is a block device                                                           |
+| Character device         | `-c FILE`           | True if FILE is a character device                                                       |
+| Socket                   | `-S FILE`           | True if FILE is a socket                                                                 |
+| Executable               | `-x FILE`           | True if FILE is executable                                                               |
+| Readable                 | `-r FILE`           | True if FILE is readable                                                                 |
+| Writable                 | `-w FILE`           | True if FILE is writable                                                                 |
+| Newer than               | `FILE1 -nt FILE2`   | True if FILE1 is newer than FILE2                                                        |
+| Older than               | `FILE1 -ot FILE2`   | True if FILE1 is older                                                                   |
+| Identical                | `FILE1 -ef FILE2`   | True if FILE1 and FILE2 are identical. I.e., they link to the same inode number & device |
+| String equals            | `STRING1 = STRING2` | True if strings are equal                                                                |
+| String empty             | `-z STRING`         | True if STRING is empty                                                                  |
+| Integer equal            | `INT1 -eq INT2`     | True if integers are equal                                                               |
+| Integer greater          | `INT1 -gt INT2`     | True if INT1 is greater than INT2                                                        |
+| Integer less             | `INT1 -lt INT2`     | True if INT1 is less than INT2                                                           |
+| Integer greater or equal | `INT1 -ge INT2`     | True if INT1 is greater than or equal to INT2                                            |
+| Integer less or equal    | `INT1 -le INT2`     | True if INT1                                                                             |
+
+### `if` Syntax
+```bash
+if CONDITION
+then
+    # Code to run if CONDITION is true
+else
+    # Code to run if CONDITION is false
+fi
+```
+
+### `for` Syntax
+```bash
+for VARIABLE in LIST
+do
+    # Code to run for each item in LIST
+done
+``` 
+
+### `while` Syntax
+`CONDITION` below is tested based on it's exit status. If it returns 0, the loop continues, otherwise it stops.
+```bash
+while CONDITION
+do
+    # Code to run while CONDITION is true
+done
+```
+
+### `trap` Syntax
+`trap` command allows you to "trap" signals and run a command when the signal is received.
+It has the syntax `trap 'COMMAND' SIGNAL`
+```shell
+#!/bin/bash
+TMPFILE1=$(mktemp /tmp/tempfile1.XXXXXX)
+TMPFILE2=$(mktemp /tmp/tempfile2.XXXXXX)
+# Clean up temporary files on interrupt
+trap 'rm -f $TMPFILE1 $TMPFILE2; exit 1' INT
+# Simulate a long-running process
+cat /proc/interrupts > $TMPFILE1
+sleep 10000 # Simulate long-running process
+cat /proc/interrupts > $TMPFILE2
+diff $TMPFILE1 $TMPFILE2
+rm -f $TMPFILE1 $TMPFILE2
+```
+
+## Development Tools
+### C Compiler
+Most distributions don;t include the tools necessary to compile C code by default. Install `build-essential` on Debian-based systems or the "Developer Tools" `yum groupinstall` for Fedora/CentOS systems.
+```shell
+# Compiling C code
+cat <<EOF > aux.c
+#include <stdio.h>
+int hello_call() {
+  printf("Hello, World!\n");
+}
+EOF
+
+cat <<EOF > main.c
+void hello_call();
+int main() {
+  hello_call();
+}
+EOF
+
+# Compile into object files
+cc -c main.c aux.c
+# Link object files into an executable
+cc -o hello main.o aux.o
+
+# Link against a static library located in one of the default locations
+cc -o hello main.o aux.o -lsample
+```
+### Library Locations
+Standard library (& include) locations, include:
+- `/lib/`
+- `/usr/lib/`
+- `/usr/include/`
+
+To make the preprocessor search for header files in a custom location, use the `-I` flag:
+```shell
+# Compile with a custom header file location
+cc -c -I/custom/dir main.c aux.c
+```
+Further, includes with double-quote `""` indicate that the header file is not in a system directory, usually indicating that it's in the same directory as the source file. E.g.,:
+```c
+#include "aux.h"  // This will look for aux.h in the same directory as the source file
+#include <stdio.h> // This will look for stdio.h in the system include directories
+```
+
+To link against a library in a custom location, use the `-L` flag:
+```shell
+# Link against a shared library located in /custom/dir/libsample.so
+cc -o hello main.o aux.o -L/custom/dir -lsample
+```
+
+### Dynamic Linking
+#### The runtime dynamic linker/loader - `ld.so`
+Programs don't often know where to find shared libraries, they only often know the library names and some hint at where they might be located. The dynamic linker/loader `ld.so` - also dynamically linked to the program with its own location explicitly specified - is responsible for finding the shared libraries and loading them into memory when a program is run.
+You can get help about the dynamic linker via `man 8 ld.so`.
+
+It uses the following locations to find shared libraries:
+- The `LD_LIBRARY_PATH` environment variable: first place to look for shared libraries. Do not set this at compile time or in startup scripts. Use this only as a last resort, and if it must be used, prefer to set this in a wrapper script that runs the target program.
+- Program's runtime library search path (rpath) - if specified. To specify rpath, use the `-Wl,-rpath=/path/to/lib` flag when linking. E.g., `cc -o hello main.o aux.o -Wl,-rpath=/path/to/lib -L/path/to/lib -lsample`. Note that `L` is still required for the linker to know where to find the library during linking. Although not preferred, the `patchelf` program can be used to update rpath on an existing executable.
+- dynamic linker system cache at `/etc/ld.so.cache`: this is a cache of shared libraries found in directories listed in `/etc/ld.so.conf` - & correspondingly files contained in `/etc/ld.so.conf.d`. If modifications are made to these files, run `ldconfig -v` to update the cache.
+
+
+#### List Shared Libraries
+To list the shared libraries that an executable is linked against, use `ldd`:
+```shell
+ldd /bin/bash
+```
+
 ## Getting Help
 ```shell
 # Display command manual
@@ -384,6 +626,16 @@ find /path/to/search -name FILE_TO_FIND -print  # find files that match and prin
 
 ```
 
+## Desktop Environments
+- Wayland protocol is the "new cool"
+- Check the value of `$WAYLAND_DISPLAY` to know if you're runninig wayland.
+- `libinput` is a library used by Wayland compositors (& other window managers) to collect messages from peripherials through the linux kernel.
+It presents an utility (also named `libinput`) to inspect input devices and events.
+`libinput list-devices`: provides information about connected input devices
+`libinput debug-events --show-keycodes`: listens for input events  
+
+## Utilities
+Consider installing the [GNU Coreutils](https://www.gnu.org/software/coreutils/) on a Linux server for enhanced command-line utilities.
 
 ## References
 - [Linux Server Course - System Configuration and Operation](https://www.youtube.com/watch?v=WMy3OzvBWc0)
