@@ -58,10 +58,15 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
     - [`trap` Syntax](#trap-syntax)
   - [Development Tools](#development-tools)
     - [C Compiler](#c-compiler)
-    - [Library Locations](#library-locations)
-    - [Dynamic Linking](#dynamic-linking)
-      - [The runtime dynamic linker/loader - `ld.so`](#the-runtime-dynamic-linkerloader---ldso)
+      - [Library Locations](#library-locations)
+      - [Dynamic Linking](#dynamic-linking)
+        - [The runtime dynamic linker/loader - `ld.so`](#the-runtime-dynamic-linkerloader---ldso)
       - [List Shared Libraries](#list-shared-libraries)
+    - [`make`](#make)
+      - [Standard Macros \& Variables](#standard-macros--variables)
+    - [Compiling Software from C Source Code](#compiling-software-from-c-source-code)
+      - [Extracting archived source files](#extracting-archived-source-files)
+      - [Configuring the package](#configuring-the-package)
   - [Getting Help](#getting-help)
   - [Shortcuts](#shortcuts)
     - [Command Line Editing](#command-line-editing)
@@ -539,7 +544,7 @@ cc -o hello main.o aux.o
 # Link against a static library located in one of the default locations
 cc -o hello main.o aux.o -lsample
 ```
-### Library Locations
+#### Library Locations
 Standard library (& include) locations, include:
 - `/lib/`
 - `/usr/lib/`
@@ -562,8 +567,8 @@ To link against a library in a custom location, use the `-L` flag:
 cc -o hello main.o aux.o -L/custom/dir -lsample
 ```
 
-### Dynamic Linking
-#### The runtime dynamic linker/loader - `ld.so`
+#### Dynamic Linking
+##### The runtime dynamic linker/loader - `ld.so`
 Programs don't often know where to find shared libraries, they only often know the library names and some hint at where they might be located. The dynamic linker/loader `ld.so` - also dynamically linked to the program with its own location explicitly specified - is responsible for finding the shared libraries and loading them into memory when a program is run.
 You can get help about the dynamic linker via `man 8 ld.so`.
 
@@ -578,6 +583,40 @@ To list the shared libraries that an executable is linked against, use `ldd`:
 ```shell
 ldd /bin/bash
 ```
+
+### `make`
+#### Standard Macros & Variables
+- `CC`: C compiler to use. Default is `cc`
+- `CFLAGS`: Flags to pass to the C compiler
+- `LDFLAGS`: Flags to pass to the linker
+- `LDLIBS`: Libraries to link against
+- `CPPFLAGS`: Flags to pass to the C preprocessor
+- `CXXFLAGS`: Flags to pass to the C++ compiler in GNU `make`
+- `$@`: While inside a rule, this is the name of the current target
+- `$<`: While inside a rule, this is the name of the first prerequisite
+- `$^`: While inside a rule, this is the names of all prerequisites, space-separated
+- `$*`: this variable expands to basename of the current target, without the suffix. E.g., if the target is `foo.o`, `$*` will expand to `foo`.
+
+### Compiling Software from C Source Code
+Basic steps involve:
+1. Extracting archived source files
+2. Configuring the package
+3. Building the program(s)
+4. Installing the program(s)
+
+#### Extracting archived source files
+```shell
+# Introspect the archive before extracting
+tar -tvf archive.tar.(gz|bz2|xz)
+# Extract the archive
+tar -xvf archive.tar.(gz|bz2|xz)
+```
+#### Configuring the package
+Arguably the most important option is `--prefix`, which specifies where the program should be installed (if using an `autoconf`-based build system). If not specified, it defaults to `/usr/local`. Configuring a custom prefix allows you to install the program in a custom location, e.g. `$HOME/myisolatedprogram`, making it easy to remove the program later without affecting the system-wide functionalities.
+```shell
+./configure --prefix=$HOME/myisolatedprogram
+```
+
 
 ## Getting Help
 ```shell
