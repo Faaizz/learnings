@@ -91,6 +91,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 
 ## Configure and Verify Network Connections
 - `ip addr`: List network connections.
+- `ip link`: List network interfaces.
 - `ip route`: List routing information.
 - `dig`: DNS lookup.
 - `/etc/hosts`: Hosts file. Local DNS.
@@ -103,6 +104,8 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 - `tcpdump`: can be used to report on every packet that flows through a network interface. E.g., `tcpdump -i lo tcp port 7777` prints header information about every TCP IP packet through port 7777. heck the pcap-filter(76) manual page for more usage information.
 - `netcat`: can connect to local / remote TCP/UDP ports, listen on ports, redirect stdio to/fro network connetions, etc. Use `netcat -l PORT` to listen on a port or `netcat HOST PORT`to connect to a port.
 - `nmap`: scan machine / network for open ports. E.g., `nmap 10.1.2.2`. More informationat https://namp.org.
+- `lsusb` & `lspci`; List USB & PCI connected devices. Listed devices may / may not have drivers installed.
+- `lshw -C network`: List connected network devices. I.e., drivers properly installed & configured.
 
 ### `ipvlan`
 Example `ipvlan` implementation according to [IPVLAN Driver HOWTO](https://www.kernel.org/doc/Documentation/networking/ipvlan.txt).
