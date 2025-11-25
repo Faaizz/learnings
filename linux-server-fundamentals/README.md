@@ -7,6 +7,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
   - [System Information](#system-information)
   - [Kernel and Boot Concepts](#kernel-and-boot-concepts)
   - [Configure and Verify Network Connections](#configure-and-verify-network-connections)
+    - [`veth Pair`](#veth-pair)
     - [`ipvlan`](#ipvlan)
   - [Manage Storage](#manage-storage)
     - [GUID Partition Table (GPT) \& Master Boot Record (MBR)](#guid-partition-table-gpt--master-boot-record-mbr)
@@ -106,6 +107,22 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
 - `nmap`: scan machine / network for open ports. E.g., `nmap 10.1.2.2`. More informationat https://namp.org.
 - `lsusb` & `lspci`; List USB & PCI connected devices. Listed devices may / may not have drivers installed.
 - `lshw -C network`: List connected network devices. I.e., drivers properly installed & configured.
+
+### `veth` Pair
+Create a virtual network interface in a network namespace which can reach the host network.
+```shell
+ip netns add ns1
+ip link add veth0 type veth peer name veth1
+ip link set veth1 netns ns1
+ip addr add 10.200.1.1/24 dev veth0
+ip link set veth0 up
+ip netns exec ns1 ip addr add 10.200.1.2/24 dev veth1
+ip netns exec ns1 ip link set veth1 up
+ip netns exec ns1 ip route add default via 10.200.1.1
+
+# Allow ns0 to reach outside world via host
+sysctl -w net.ipv4.ip_forward=1
+```
 
 ### `ipvlan`
 Example `ipvlan` implementation according to [IPVLAN Driver HOWTO](https://www.kernel.org/doc/Documentation/networking/ipvlan.txt).
