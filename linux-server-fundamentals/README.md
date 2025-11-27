@@ -167,6 +167,7 @@ Linux uses a single filesystem. Say we have linux running on a drive `/dev/sda`.
 - List block devices: `lsblk` or `cat /proc/partitions`
 - List block devices with extra info (e.g. UUID): `blkid`
 - Creating partitions: `parted`, `gparted` (GUI), `fdisk`. `fdisk` is older and available in all linux systems
+- Deleting partitions: `sgdisk`
 
 ### Formatting Filesystems
 - `ext` family:
