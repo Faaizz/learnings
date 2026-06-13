@@ -7,7 +7,7 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
   - [System Information](#system-information)
   - [Kernel and Boot Concepts](#kernel-and-boot-concepts)
   - [Configure and Verify Network Connections](#configure-and-verify-network-connections)
-    - [`veth Pair`](#veth-pair)
+    - [`veth` Pair](#veth-pair)
     - [`ipvlan`](#ipvlan)
   - [Manage Storage](#manage-storage)
     - [GUID Partition Table (GPT) \& Master Boot Record (MBR)](#guid-partition-table-gpt--master-boot-record-mbr)
@@ -57,6 +57,8 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
     - [`for` Syntax](#for-syntax)
     - [`while` Syntax](#while-syntax)
     - [`trap` Syntax](#trap-syntax)
+  - [Resource Control](#resource-control)
+    - [Control Groups (cgroups)](#control-groups-cgroups)
   - [Development Tools](#development-tools)
     - [C Compiler](#c-compiler)
     - [Library Locations](#library-locations)
@@ -532,6 +534,63 @@ cat /proc/interrupts > $TMPFILE2
 diff $TMPFILE1 $TMPFILE2
 rm -f $TMPFILE1 $TMPFILE2
 ```
+
+## Resource Control
+### Control Groups (cgroups)
+The Control Groups functionality of the Linux kernel is implemented as a pseudo-filesystem often located at `/sys/fs/cgroup`.
+To check the specific location & check the cgroup version on a machine, run: `mount -l | grep cgroup`.  
+Here are some basic cgroup operations:
+```shell
+# Create a cgroup
+mkdir /sys/fs/cgroup/my_group
+
+# Set CPU restriction to 50%
+# <cpu_share> <cpu_period> of a single core
+# For multicore machines, <cpu_share> > <cpu_period> is allowed.
+# E.g., "200000 100000" signifies 200% CPU -> 2 cores
+echo "50000 100000" > /sys/fs/cgroup/my_group/cpu.max
+
+# Set memory restriction to 100M
+echo "100M" > /sys/fs/cgroup/my_group/memory.max
+
+# Add a process to the group
+# Start dummy process located at ~/proc1 in the background
+~/proc1 &
+PROC1_PID=$(pgrep -xo proc1)
+echo "${PROC1_PID}" >> /sys/fs/cgroup/my_group/cgroup.procs
+
+# Delete cgroup
+# Ensure all processes in the cgroup have exited
+# rm -rf doesn't work here :-S
+rmdir /sys/fs/cgroup/my_group
+
+# SystemD
+# You can also convinietly start a restricted process in the background using `sytemd-run`
+systemd-run -u proc1 -p CPUQuota=25% -p MemoryMax=100M ~/proc1
+# Tree of all cgroups
+systemd-cgls -all
+# Top Cgroups & resource usage
+systemd-cgtop
+# Persistent cgroups via SystemD Slice
+cat <<EOF > /etc/systemd/system/my_group.slice
+[Slice]
+CPUQuota=25%
+MemoryMax=100M
+EOF
+systemctl daemon-reload
+# Start process in a child cgroup of my_group.slice
+systemd-run -u proc1 --slice=my_group.slice ~/proc1
+# Cleanup failed runs (if necessary).
+# Prevents the following error: 
+# Failed to start transient service unit:
+# Unit <name>.service was already loaded or has a fragment file.
+systemctl reset-failed
+# + Docker
+# Place multiple docker containers in the same cgroup
+docker run -d --name web --cgroup-parent=my_group.slice nginx
+docker run -d --name rdb --cgroup-parent=my_group.slice redis
+```
+
 
 ## Development Tools
 ### C Compiler
