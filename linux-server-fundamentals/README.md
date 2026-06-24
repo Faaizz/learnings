@@ -71,6 +71,8 @@ Full lesson by Shawn Powers on YouTube at [freeCodeCamp](https://www.youtube.com
   - [Miscellaneous Commands](#miscellaneous-commands)
   - [Desktop Environments](#desktop-environments)
   - [Utilities](#utilities)
+  - [Others](#others)
+    - [Run an ARM64 Binary on an AMD64 Machine using QEMU Emulation](./others/arm64-binary-on-amd64-machine-qemu.md)
   - [References](#references)
 
 
@@ -716,6 +718,9 @@ It presents an utility (also named `libinput`) to inspect input devices and even
 
 ## Utilities
 Consider installing the [GNU Coreutils](https://www.gnu.org/software/coreutils/) on a Linux server for enhanced command-line utilities.
+
+## Others
+- [Run an ARM64 Binary on an AMD64 Machine using QEMU Emulation](./others/arm64-binary-on-amd64-machine-qemu.md)
 
 ## References
 - [Linux Server Course - System Configuration and Operation](https://www.youtube.com/watch?v=WMy3OzvBWc0)
